@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.background-image-main{
+  position: absolute;
+  background-color: #2D97F0;
+
+  background-image: url( /wallpaper.webp) ;
+  block-size: 100%;
+  background-size: cover;
+  background-position: 50%;
+  z-index: -1;
+  inline-size: 100%;
+  block-size: 100%;
+}

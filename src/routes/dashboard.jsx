@@ -1,12 +1,44 @@
 import React from 'react'
+import CloudProfile from '../components/icons/cloudProfile'
+import ProfileAvatar from '../components/profile/profileAvatar'
+import Recent from '../components/icons/recent'
 
 export default function Dashboard() {
   return (
     <>
-        <div className=' h-48 w-48 bg-opacity-35'>
-        <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 185 196" ariaHidden="true" className="profile-background"><defs><path id="0cdfbf55a4f6da8df6561d7ad9023ce8b" d="M0 0h185v196H0z"></path><path d="M133.685 175C162.38 175 185 153.618 185 127.246c0-19.838-11.668-36.944-29.884-45.021C154.997 40.173 124.636 10 85.823 10c-25.36 0-43.575 13.305-55.243 29.341-23.336-6.058-48.457 11.285-49.172 37.776C-40.022 80.917-53 100.28-53 123.327c0 27.796 24.526 51.554 57.149 51.554l129.536.119z" id="0cdfbf55a4f6da8df6561d7ad9023ce8e"></path><linearGradient x1="19.823%" y1="45.17%" x2="-1.128%" y2="45.17%" id="0cdfbf55a4f6da8df6561d7ad9023ce8a"><stop stopColor="#FFF" offset="0%"></stop><stop stopColor="#FFF" stopOpacity="0" offset="100%"></stop></linearGradient><filter x="-4.6%" y="-6.7%" width="109.2%" height="113.3%" filterUnits="objectBoundingBox" id="0cdfbf55a4f6da8df6561d7ad9023ce8d"><feGaussianBlur stdDeviation="6.5" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur><feOffset dy="9" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset><feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.133002328 0" in="shadowInnerInner1"></feColorMatrix></filter></defs><g fill="none" fillRule="evenodd"><mask id="0cdfbf55a4f6da8df6561d7ad9023ce8c" fill="url(#0cdfbf55a4f6da8df6561d7ad9023ce8a)"><use xlinkHref="#0cdfbf55a4f6da8df6561d7ad9023ce8b"></use></mask><g fillRule="nonzero" mask="url(#0cdfbf55a4f6da8df6561d7ad9023ce8c)" fill="#000"><use filter="url(#0cdfbf55a4f6da8df6561d7ad9023ce8d)" xlinkHref="#0cdfbf55a4f6da8df6561d7ad9023ce8e"></use></g></g></svg>
-
+    <div className='md:flex md:flex-row md:w-full md:gap-x-8 '>
+        <div className=' basis-1/3 mb-10 py-3 h-80 w-80 cursor-pointer rounded-2xl shadow-2xl backdrop-blur-lg hover:scale-[1.03] transition-all duration-300 ease-in-out'  style={{background:'radial-gradient(circle at 100% 0, hsla(0, 0%, 100%, .85) 0, hsla(0, 0%, 96.1%, .13) 183%)'}}>
+            <div className='w-48 h-48'>
+                <CloudProfile />
+                <div className='absolute w-28 top-10 left-8'>
+                    <ProfileAvatar />
+                </div>
+            </div>
+            <div className='ml-10 mt-2'>
+                <h2 className='text-3xl font-bold'>Ehsan</h2>
+                <p className='font-thin tracking-wide'>ehsankeyhan75@gmail.com</p>
+                <p className='uppercase mt-2'>premium</p>
+            </div>
         </div>
+        <div className=' basis-2/3 mb-10 h-80  rounded-2xl bg-white overflow-hidden shadow-2xl backdrop-blur-lg hover:scale-[1.03] transition-all duration-300 ease-in-out' >
+            <div className='w-full bg-[#dceefd] p-3 '>
+                <div className='p-3 items-center flex gap-x-3 hover:bg-neutral-500 cursor-pointer hover:bg-opacity-15 rounded-xl'>
+                    <div className='w-10'>
+                        <img src="/articles.png" alt="article" />
+                    </div>
+                    <div>
+                        <p className='font-semibold text-xl tracking-wide'>Articles</p>
+                        <div className='flex items-center -mt-1 text-sm text-neutral-600 font-extralight gap-x-1'>
+                            <Recent />
+                            <p>Recents</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className=''></div>
+        </div>
+    </div>
+       
     </>
   )
 }

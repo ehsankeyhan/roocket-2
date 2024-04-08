@@ -7,10 +7,10 @@ import {
   Outlet
 } from "react-router-dom";
 import Dashboard from './routes/dashboard';
-import ManageArticles from './routes/manageArticles';
 import Header from './components/layouts/header/header';
 import { Provider } from 'react-redux'
 import { store } from './components/store/store';
+import Articles from './routes/articles';
 
 const router = createBrowserRouter([
   {
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
     element: 
     <div className=' overflow-y-auto background-image-main object-cover'>
       <Header />
-        <div className='outlet min-h-screen  md:max-w-[1000px] md:block flex md:justify-between justify-center pt-28 '>
+        <div className='mx-auto md:max-w-[1000px] md:block flex md:justify-between justify-center pt-28 '>
           <Outlet />
         </div>
         <div className='w-full h-80 bg-white'></div>
@@ -31,8 +31,8 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "manageArticles",
-        element: <ManageArticles />,
+        path: "articles",
+        element: <Articles />,
       },
     ],
   },

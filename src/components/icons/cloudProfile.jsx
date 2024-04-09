@@ -5,7 +5,8 @@ export default function CloudProfile() {
     <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 185 196" ariaHidden="true"
+        viewBox="0 0 185 196" 
+        aria-hidden="true"
         className="profile-background"
         ><defs>
         <path id="0cdfbf55a4f6da8df6561d7ad9023ce8b" d="M0 0h185v196H0z"></path>

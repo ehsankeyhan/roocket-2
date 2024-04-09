@@ -18,7 +18,7 @@ export default function DashboardItem() {
             <QuickAccess />
         </div>
         <div className=' basis-2/3 mb-10 h-80  rounded-2xl bg-white overflow-hidden shadow-2xl backdrop-blur-lg hover:scale-[1.03] transition-all duration-300 ease-in-out' >
-            <ArticlesCard />
+            <ArticlesCard limited={true}/>
         </div>
     </div>
   )

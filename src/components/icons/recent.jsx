@@ -4,7 +4,7 @@ export default function Recent() {
   return (
     <svg
     xmlns="http://www.w3.org/2000/svg"
-    ariaHidden="true"
+    aria-hidden="true"
     className="fill-blue-700 h-3"
     data-testid="Recents"
     viewBox="0 0 99.61 99.657"

@@ -6,11 +6,11 @@ import {
   RouterProvider,
   Outlet
 } from "react-router-dom";
-import Dashboard from './routes/dashboard';
-import Header from './components/layouts/header/header';
+import Dashboard from './routes/Dashboard';
+import Header from './components/layouts/header/Header';
 import { Provider } from 'react-redux'
 import { store } from './components/store/store';
-import Articles from './routes/articles';
+import Articles from './routes/Articles';
 
 const router = createBrowserRouter([
   {

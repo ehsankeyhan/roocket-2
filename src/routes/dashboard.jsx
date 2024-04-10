@@ -1,5 +1,5 @@
 import React from 'react'
-import DashboardItem from '../components/dashboard/dashboardItem'
+import DashboardItem from '../components/dashboard/DashboardItem'
 
 
 export default function Dashboard() {

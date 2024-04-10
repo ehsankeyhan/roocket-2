@@ -1,10 +1,10 @@
 import React from 'react'
-import MenuDots from '../icons/menuDots'
-import ProfileAvatar from '../profile/profileAvatar'
+import MenuDots from '../icons/MenuDots'
+import ProfileAvatar from '../profile/ProfileAvatar'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleMenu } from '../store/slice/menuSlice'
 import { NavLink } from 'react-router-dom'
-import MenuItem from './menuItem'
+import MenuItem from './MenuItem'
 
 
 export default function Menu() {
@@ -15,7 +15,6 @@ export default function Menu() {
         const menu = document.getElementById('mainMenu');
         if (menu) {
             if (menuIsOpen) {
-                console.log(true);
                 menu.style.opacity = '1';
                 menu.style.height = '9rem';
                 menu.style.width = '19rem';

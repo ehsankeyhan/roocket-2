@@ -1,11 +1,11 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleQuickAccess } from '../store/slice/quickAccessSlice'
-import MenuItem from '../menu/menuItem'
-import ArticlesCard from '../articles/articlesCard'
-import Plus from '../icons/plus'
-import UserInfo from '../profile/userInfo'
-import QuickAccess from '../menu/quickAccess'
+import MenuItem from '../menu/MenuItem'
+import ArticlesCard from '../articles/ArticlesCard'
+import Plus from '../icons/Plus'
+import UserInfo from '../profile/UserInfo'
+import QuickAccess from '../menu/QuickAccess'
 
 export default function DashboardItem() {
     const quickAccessIsOpen = useSelector((state) => state.quickAccessIsOpen.value)

@@ -1,8 +1,8 @@
 import React from 'react'
 import { toggleQuickAccess } from '../store/slice/quickAccessSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import MenuItem from './menuItem'
-import Plus from '../icons/plus'
+import MenuItem from './MenuItem'
+import Plus from '../icons/Plus'
 
 export default function QuickAccess() {
     const quickAccessIsOpen = useSelector((state) => state.quickAccessIsOpen.value)

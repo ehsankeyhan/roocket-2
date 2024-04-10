@@ -1,5 +1,5 @@
 import React from 'react'
-import ArticlesCard from './articlesCard'
+import ArticlesCard from './ArticlesCard'
 
 
 export default function ManageArticles() {

@@ -1,5 +1,5 @@
 import React from 'react'
-import CloudProfile from '../icons/CloudProfile'
+import CloudProfile from '../../assets/icons/CloudProfile'
 import ProfileAvatar from './ProfileAvatar'
 
 export default function UserInfo() {

@@ -1,11 +1,18 @@
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import { ArticlesContext } from '../../contexts/ArticleContext';
+import LoadingButton from '../buttons/LoadingButton';
+import useSweetAlert from '../../hooks/useSweetAlert';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import useFormik from '../../hooks/useFormik';
 
 export default function AddNewTitleModal ({ isOpen, setIsOpen}) {
-  const [title, setTitle] = useState('');
   const {articleDispatcher} = useContext(ArticlesContext)
   const [isLoading , setIsLoading] = useState(false)
+  const Toast = useSweetAlert()
+  const formikProps = useFormik();
+
+
 
   const addNewTitle = async (newTitle) => {    
     try {
@@ -21,19 +28,23 @@ export default function AddNewTitleModal ({ isOpen, setIsOpen}) {
             title:newTitle,
             createdAt:Date.now()
         })
+        Toast.fire({
+          icon: "success",
+          title: "Title created successfully"
+        });
         setIsOpen(false)
         setIsLoading(false)
-        setTitle('')
       } 
     } catch (error) {
-        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "An internal server Error"
+        });
+        setIsOpen(false)
+        setIsLoading(false)
     }
   };
 
-
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value);
-  };
 
   const handleSaveNewTitle = (newTitle) => {
       setIsLoading(true)
@@ -42,6 +53,7 @@ export default function AddNewTitleModal ({ isOpen, setIsOpen}) {
 
   const handleCancelNewTitle = () => {
     setIsOpen(false); 
+    setIsLoading(false)
   };
 
   return (
@@ -49,26 +61,44 @@ export default function AddNewTitleModal ({ isOpen, setIsOpen}) {
       <div className="fixed inset-0 bg-black opacity-50"></div>
       <div className="bg-white p-8 rounded-lg shadow-lg z-10">
         <p className="mb-4">Add New Title</p>
-        <input 
-          type="text" 
-          className="border border-gray-300 rounded-md px-3 py-2 mb-4 w-full"
-          value={title} 
-          onChange={handleTitleChange} 
-        />
-        <div className="flex justify-end">
-          <button 
-            className="mr-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            onClick={() => handleSaveNewTitle(title)}
-          >
-            {isLoading?'loading':'save'}
-          </button>
-          <button 
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
-            onClick={handleCancelNewTitle}
-          >
-            Cancel
-          </button>
-        </div>
+        <Formik
+          {...formikProps}
+          onSubmit={(values) => {
+          handleSaveNewTitle(values.title)
+         }}
+       >
+         {({ errors, touched }) => (
+          <Form>
+            <Field
+              type="text" 
+              name="title"
+              className={`border rounded-md px-3 py-2 mb-2 w-full ${
+                errors.title && touched.title ? 'border-red-500 focus:outline-red-500' : 'border-gray-300 '
+              }`}
+            />
+            <p className='text-red-500 max-w-80 my-2 text-sm'>
+              <ErrorMessage name="title"  />
+            </p>
+            <div className="flex justify-center">
+              <button 
+                className="mr-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed " 
+                type='submit'
+                disabled={isLoading}
+              >
+                <LoadingButton isLoading={isLoading} text='Save' /> 
+              </button>
+              <button 
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={handleCancelNewTitle}
+                type='button'
+                disabled={isLoading}
+              >
+                Cancel
+              </button>
+            </div>
+          </Form>
+         )}
+        </Formik>
       </div>
     </div>
   );

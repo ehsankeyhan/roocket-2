@@ -3,7 +3,7 @@ import ManageArticles from '../components/articles/ManageArticles'
 
 export default function Articles() {
   return (
-    <div>
+    <div >
         <ManageArticles />
     </div>
   )

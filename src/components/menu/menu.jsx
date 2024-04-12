@@ -1,9 +1,8 @@
 import React from 'react'
-import MenuDots from '../icons/MenuDots'
+import MenuDots from '../../assets/icons/MenuDots'
 import ProfileAvatar from '../profile/ProfileAvatar'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleMenu } from '../store/slice/menuSlice'
-import { NavLink } from 'react-router-dom'
 import MenuItem from './MenuItem'
 
 
@@ -11,12 +10,12 @@ export default function Menu() {
     const menuIsOpen = useSelector((state) => state.menuIsOpen.value)
     const dispatch = useDispatch()
     const handleToggleMenu = () => {
-        dispatch(toggleMenu())
         const menu = document.getElementById('mainMenu');
+        dispatch(toggleMenu())
         if (menu) {
-            if (menuIsOpen) {
+            if (menuIsOpen===false) {
                 menu.style.opacity = '1';
-                menu.style.height = '9rem';
+                menu.style.height = '8rem';
                 menu.style.width = '19rem';
                 menu.style.scale = '1.03'
                 setTimeout(() => {
@@ -27,10 +26,13 @@ export default function Menu() {
                 setTimeout(() => {
                     menu.style.height = '0';
                     menu.style.width = '0';
+                    menu.style.overflow = 'hidden'
                 }, 200);
             }
         }
     };
+
+
 
   return (
     <div className='flex justify-between h-full items-center'>
@@ -41,7 +43,7 @@ export default function Menu() {
             <button onClick={handleToggleMenu} className='relative hover:bg-neutral-600 hover:bg-opacity-20 py-1 px-2 rounded-lg  '>
                 <MenuDots />
             </button>
-            <div id="mainMenu" className='right-24  top-[3.2rem] grid grid-cols-3 gap-x-3 p-4 max-w-72 mx-auto absolute  bg-white rounded-2xl shadow-xl transition-all duration-300 ease-in-out'>
+            <div id="mainMenu" className={`right-24  top-[3.2rem] grid grid-cols-3 gap-x-3 p-4 max-w-72 mx-auto absolute  bg-white rounded-2xl shadow-xl transition-all duration-300 ease-in-out ${menuIsOpen?'':'opacity-0 w-0 h-0 overflow-hidden'}`}>
                 <MenuItem name='Dashboard' />
                 <MenuItem name='Articles' />
             </div>

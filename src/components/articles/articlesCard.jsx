@@ -1,22 +1,24 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react'
-import Recent from '../icons/Recent'
-import Delete from '../icons/Delete';
-import Edit from '../icons/Edit';
+import Recent from '../../assets/icons/Recent'
 import axios from 'axios';
 
 import AriticleItem from './AriticleItem';
 import ArticlesReducer from '../../reducers/ArticlesReducer';
 import { ArticlesContext } from '../../contexts/ArticleContext';
 import { NavLink } from 'react-router-dom';
-import Plus from '../icons/Plus';
+import Plus from '../../assets/icons/Plus';
 import AddNewTitleModal from '../modal/AddNewTitleModal';
+import ArticleLoading from './ArticleLoading';
+import useSweetAlert from '../../hooks/useSweetAlert';
+
 
 export default function ArticlesCard({limited}) {
 
     const [articlesData , articleDispatcher ] = useReducer(ArticlesReducer,[]) 
     const [isLoading , setIsLoading] = useState(true)
-    const [error , setError] = useState(null)
     const [isNewTitleModalOpen, setIsNewTitleModalOpen] = useState(false);
+    const Toast = useSweetAlert()
+
 
     const fetchData = async ()=>{
 
@@ -32,7 +34,10 @@ export default function ArticlesCard({limited}) {
         
             setIsLoading(false)
         } catch (error) {
-            setError(error)  
+            Toast.fire({
+                icon: "error",
+                title: "An internal server Error"
+              });
         }
     }
     useEffect(()=>{
@@ -43,7 +48,7 @@ export default function ArticlesCard({limited}) {
     
   return (
     <>
-        <div className='w-full bg-[#dceefd] p-3 '>
+        <div className=' bg-[#dceefd] p-3 '>
             {limited?<NavLink to={'/Articles'} className='p-3  flex justify-between hover:bg-neutral-500 cursor-pointer hover:bg-opacity-15 rounded-xl'>
                 <div className='flex items-center gap-x-3'>
                     <div className='w-10'>
@@ -77,18 +82,21 @@ export default function ArticlesCard({limited}) {
             </div>}
             
         </div>
-        <div className='max-h-[480px] m-3 overflow-y-scroll'>
+        <div className={`transition-all ease-in-out duration-500 m-3 overflow-y-scroll ${ articlesData&&!isLoading?'max-h-[480px]':'max-h-80'}`}>
         <ArticlesContext.Provider value={{articlesData,articleDispatcher}}>
-
             <table className='w-full '>
                 <tbody className=''>
                         {articlesData&&!isLoading?
                             (limited?articlesData.slice(0,3).map((article,index)=>(
-                                <AriticleItem key={index} index={index} article={article}/>
+                                <AriticleItem key={article.id} index={index} article={article} limited={limited}/>
                             )):articlesData.map((article,index)=>(
-                                <AriticleItem key={index} index={index}   article={article}/>
+                                <AriticleItem key={article.id} index={index}  article={article} limited={limited}/>
                             ))):<tr>
-                                    <td>'loading'</td>
+                                    <td>
+                                        <ArticleLoading />
+                                        <ArticleLoading /> 
+                                        <ArticleLoading />
+                                    </td>
                                 </tr>
                         }
                 </tbody>

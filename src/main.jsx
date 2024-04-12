@@ -18,7 +18,7 @@ const router = createBrowserRouter([
     element: 
     <div className=' overflow-y-auto background-image-main object-cover'>
       <Header />
-        <div className='mx-auto min-h-screen md:max-w-[1000px] md:block flex md:justify-between justify-center pt-28 '>
+        <div className='mx-auto min-h-screen md:max-w-[1100px] px-5 md:block flex md:justify-between justify-center pt-28 '>
           <Outlet />
         </div>
         <div className='w-full h-80 bg-white'></div>

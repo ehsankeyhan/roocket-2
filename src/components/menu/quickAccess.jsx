@@ -9,7 +9,7 @@ export default function QuickAccess() {
     const dispatch = useDispatch()
 
   return (
-    <div onClick={()=>dispatch(toggleQuickAccess())} className={`hover:bg-opacity-65 transition-all duration-300 ease-in-out z-50 relative cursor-pointer w-24 h-24 bg-white shadow-2xl bg-opacity-30 flex justify-center items-center rounded-2xl }`}>
+    <div onClick={()=>dispatch(toggleQuickAccess())} className={`hover:bg-opacity-65 transition-all duration-300 ease-in-out z-40 relative cursor-pointer w-24 h-24 bg-white shadow-2xl bg-opacity-30 flex justify-center items-center rounded-2xl }`}>
         <span className={`transition-all duration-300 ease-in-out ${quickAccessIsOpen?'rotate-90 bg-opacity-65':''}`}>
             <Plus w='30' h='30' />
         </span>

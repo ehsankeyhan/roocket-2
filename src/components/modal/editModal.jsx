@@ -5,52 +5,59 @@ import LoadingButton from '../buttons/LoadingButton';
 import useSweetAlert from '../../hooks/useSweetAlert';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import useFormik from '../../hooks/useFormik';
+import useSWRMutation from 'swr/mutation'
+import { useSWRConfig } from 'swr';
+
+
+
+const editTitle = (url , { arg }) => axios.put(url,{
+  title: arg,
+  createdAt : Date.now()
+}).then(res => res.data)
+
 
 export default function EditModal ({ isOpen, article, setIsOpen}) {
   const {articleDispatcher}= useContext(ArticlesContext)
-  const [isLoading , setIsLoading] = useState(false)
   const Toast = useSweetAlert()
   const formikProps = useFormik(article.title);
+  const { mutate } = useSWRConfig()
+  const {trigger,isMutating,data,error} = useSWRMutation(`https://65f7f726b4f842e808867f20.mockapi.io/rocket-1/api/Articles/${article.id}`,editTitle,{revalidateIfStale:false,revalidateOnMount:false})
 
-  const editTitle = async (newTitle) => {
-    try {
-      const res = await axios.put(`https://65f7f726b4f842e808867f20.mockapi.io/rocket-1/api/Articles/${article.id}`, {
-        title: newTitle,
-        createdAt : Date.now()
+
+
+  useEffect(()=>{
+    if(data){
+      articleDispatcher({
+          type :'edit-title',
+          id:data.id,
+          newTitle:data.title,
+          createdAt:Date.now()
+      })
+      setIsOpen(false);
+      Toast.fire({
+        icon: "success",
+        title: "Title edited successfully"
       });
-      const data = res.data;
-      if (data){
-        articleDispatcher({
-            type :'edit-title',
-            id:data.id,
-            newTitle,
-            createdAt:Date.now()
-        })
-        Toast.fire({
-          icon: "success",
-          title: "Title edited successfully"
-        });
-        setIsOpen(false);
-        setIsLoading(false)
-      } 
-    } catch (error) {
-        Toast.fire({
+      mutate('https://65f7f726b4f842e808867f20.mockapi.io/rocket-1/api/Articles');
+    }
+},[data])
+
+useEffect(()=>{
+    if(error){
+       Toast.fire({
           icon: "error",
           title: "An internal server Error"
         });
         setIsOpen(false);
-        setIsLoading(false)
     }
-  };
-
+},[error])
+ 
   const handleSaveTitle = async (newTitle) => {
-      setIsLoading(true)
-      editTitle(newTitle);
+    trigger(newTitle)
  }
 
   const handleCancelEdit = () => {
     setIsOpen(false); 
-    setIsLoading(false)
   };
 
   return (
@@ -81,15 +88,15 @@ export default function EditModal ({ isOpen, article, setIsOpen}) {
             <button 
               className="mr-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
               type='submit'
-              disabled={isLoading}
+              disabled={isMutating}
             >
-              <LoadingButton isLoading={isLoading} text='Save' /> 
+              <LoadingButton isMutating={isMutating} text='Save' /> 
             </button>
             <button 
               className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleCancelEdit}
               type='button'
-              disabled={isLoading}
+              disabled={isMutating}
             >
               Cancel
             </button>

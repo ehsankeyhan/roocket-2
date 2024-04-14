@@ -1,59 +1,58 @@
 import axios from 'axios';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ArticlesContext } from '../../contexts/ArticleContext';
 import LoadingButton from '../buttons/LoadingButton';
 import useSweetAlert from '../../hooks/useSweetAlert';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import useFormik from '../../hooks/useFormik';
+import useSWR, { useSWRConfig } from 'swr';
+import useSWRMutation from 'swr/mutation'
+  
+const addNewTitle = (url , { arg }) => axios.post(url,{
+  title: arg,
+  createdAt : Date.now()
+}).then(res => res.data)
 
 export default function AddNewTitleModal ({ isOpen, setIsOpen}) {
   const {articleDispatcher} = useContext(ArticlesContext)
-  const [isLoading , setIsLoading] = useState(false)
   const Toast = useSweetAlert()
-  const formikProps = useFormik();
+  const formikProps = useFormik('');
+  const { mutate } = useSWRConfig()
+  const {trigger,isMutating,data,error} = useSWRMutation('https://65f7f726b4f842e808867f20.mockapi.io/rocket-1/api/Articles',addNewTitle,{revalidateIfStale:false,revalidateOnMount:false})
 
-
-
-  const addNewTitle = async (newTitle) => {    
-    try {
-      const res = await axios.post(`https://65f7f726b4f842e808867f20.mockapi.io/rocket-1/api/Articles`, {
-        title: newTitle,
-        createdAt : Date.now()
-      });
-      const data = res.data;
-      if (data){
-        articleDispatcher({
-            type :'add',
-            id:data?.id,
-            title:newTitle,
+  useEffect(()=>{
+    if(data){
+      articleDispatcher({
+        type :'add',
+        id:data?.id,
+        title:data.title,
             createdAt:Date.now()
         })
-        Toast.fire({
-          icon: "success",
-          title: "Title created successfully"
-        });
-        setIsOpen(false)
-        setIsLoading(false)
-      } 
-    } catch (error) {
-        Toast.fire({
+      setIsOpen(false);
+      Toast.fire({
+        icon: "success",
+        title: "Title created successfully"
+      });
+      mutate('https://65f7f726b4f842e808867f20.mockapi.io/rocket-1/api/Articles');
+    }
+},[data])
+
+useEffect(()=>{
+    if(error){
+       Toast.fire({
           icon: "error",
           title: "An internal server Error"
         });
-        setIsOpen(false)
-        setIsLoading(false)
+        setIsOpen(false);
     }
-  };
-
+},[error])
 
   const handleSaveNewTitle = (newTitle) => {
-      setIsLoading(true)
-      addNewTitle(newTitle);
+      trigger(newTitle)
  }
 
   const handleCancelNewTitle = () => {
     setIsOpen(false); 
-    setIsLoading(false)
   };
 
   return (
@@ -63,8 +62,9 @@ export default function AddNewTitleModal ({ isOpen, setIsOpen}) {
         <p className="mb-4">Add New Title</p>
         <Formik
           {...formikProps}
-          onSubmit={(values) => {
+          onSubmit={(values, { resetForm }) => {
           handleSaveNewTitle(values.title)
+          resetForm({ title: null });
          }}
        >
          {({ errors, touched }) => (
@@ -83,15 +83,15 @@ export default function AddNewTitleModal ({ isOpen, setIsOpen}) {
               <button 
                 className="mr-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed " 
                 type='submit'
-                disabled={isLoading}
+                disabled={isMutating}
               >
-                <LoadingButton isLoading={isLoading} text='Save' /> 
+                <LoadingButton isMutating={isMutating} text='Save' /> 
               </button>
               <button 
                 className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleCancelNewTitle}
                 type='button'
-                disabled={isLoading}
+                disabled={isMutating}
               >
                 Cancel
               </button>

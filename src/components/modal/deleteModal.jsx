@@ -1,52 +1,59 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ArticlesContext } from '../../contexts/ArticleContext';
 import axios from 'axios';
 import LoadingButton from '../buttons/LoadingButton';
 import useSweetAlert from '../../hooks/useSweetAlert';
+import useSWRMutation from 'swr/mutation'
+import { useSWRConfig } from 'swr';
 
+
+const deleteTitle = (url) => axios.delete(url).then(res => res.data)
 
 
 export default function DeleteModal({ isOpen , setIsOpen ,article}) {
     const {articleDispatcher}= useContext(ArticlesContext)
-    const [isLoading , setIsLoading] = useState(false)
     const Toast = useSweetAlert()
+    const { mutate } = useSWRConfig()
+    const {trigger,isMutating,data,error} = useSWRMutation(`https://65f7f726b4f842e808867f20.mockapi.io/rocket-1/api/Articles/${article.id}`,deleteTitle,{revalidateIfStale:false,revalidateOnMount:false})
+  
 
 
-    const fetchData = async () => {
-      try {
-        const res = await axios.delete(`https://65f7f726b4f842e808867f20.mockapi.io/rocket-1/api/Articles/${article.id}`);
-        const data = res.data;
-        if (data){
-          articleDispatcher({
-              type :'delete-title',
-              id:data.id,
-          })
-          Toast.fire({
-            icon: "success",
-            title: "Title deleted successfully"
-          });
-          setIsOpen(false);
-          setIsLoading(false)
-        } 
-      } catch (error) {
-          Toast.fire({
+    useEffect(()=>{
+      if(data){
+        articleDispatcher({
+          type :'delete-title',
+          id:data.id,
+      })
+        setIsOpen(false);
+        Toast.fire({
+          icon: "success",
+          title: "Title deleted successfully"
+        });
+        mutate('https://65f7f726b4f842e808867f20.mockapi.io/rocket-1/api/Articles');
+      }
+  },[data])
+  
+  useEffect(()=>{
+      if(error){
+         Toast.fire({
             icon: "error",
             title: "An internal server Error"
           });
           setIsOpen(false);
-          setIsLoading(false)
-
       }
-    };
+  },[error])
+
+
+
+    
 
     const handleDelete = () => {
-        setIsLoading(true)
-        fetchData();
+        trigger()
+
     };
 
     const handleCancel = () => {
         setIsOpen(false);
-        setIsLoading(false)
     };
 
   return (
@@ -59,14 +66,14 @@ export default function DeleteModal({ isOpen , setIsOpen ,article}) {
           <button 
             className="mr-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed "
             onClick={handleDelete}
-            disabled={isLoading}
+            disabled={isMutating}
           >
-              <LoadingButton isLoading={isLoading} text='Delete' /> 
+              <LoadingButton isMutating={isMutating} text='Delete' /> 
           </button>
           <button 
             className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleCancel}
-            disabled={isLoading}
+            disabled={isMutating}
           >
             <span className='w-14 block'>No</span>
           </button>

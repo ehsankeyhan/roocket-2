@@ -10,39 +10,34 @@ import Plus from '../../assets/icons/Plus';
 import AddNewTitleModal from '../modal/AddNewTitleModal';
 import ArticleLoading from './ArticleLoading';
 import useSweetAlert from '../../hooks/useSweetAlert';
+import useSWR from 'swr';
+
+const fetcher = url => axios.get(url).then(res => res.data)
 
 
 export default function ArticlesCard({limited}) {
 
     const [articlesData , articleDispatcher ] = useReducer(ArticlesReducer,[]) 
-    const [isLoading , setIsLoading] = useState(true)
     const [isNewTitleModalOpen, setIsNewTitleModalOpen] = useState(false);
     const Toast = useSweetAlert()
-
-
-    const fetchData = async ()=>{
-
-        try {
-            const res = await axios.get('https://65f7f726b4f842e808867f20.mockapi.io/rocket-1/api/Articles')
-            const data = await res.data
+    const { data, error, isLoading } = useSWR('https://65f7f726b4f842e808867f20.mockapi.io/rocket-1/api/Articles', fetcher)
+    useEffect(()=>{
+        if(data){
             const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-
             articleDispatcher({
                 type : 'initial-articles',
                 articlesData : sortedData
             })
-        
-            setIsLoading(false)
-        } catch (error) {
-            Toast.fire({
+        }
+    },[data])
+    useEffect(()=>{
+        if(error){
+           Toast.fire({
                 icon: "error",
                 title: "An internal server Error"
               });
         }
-    }
-    useEffect(()=>{
-        fetchData()
-    },[])
+    },[error])
 
 
     
@@ -82,14 +77,14 @@ export default function ArticlesCard({limited}) {
             </div>}
             
         </div>
-        <div className={`transition-all ease-in-out duration-500 m-3 overflow-y-scroll ${ articlesData&&!isLoading?'max-h-[480px]':'max-h-80'}`}>
+        <div className={`transition-all ease-in-out duration-500 m-3  ${!limited&&!isLoading?'max-h-[480px] overflow-y-scroll':'max-h-80 '}`}>
         <ArticlesContext.Provider value={{articlesData,articleDispatcher}}>
-            <table className='w-full '>
+          <table className='w-full '>
                 <tbody className=''>
                         {articlesData&&!isLoading?
-                            (limited?articlesData.slice(0,3).map((article,index)=>(
+                            (limited?articlesData?.slice(0,3).map((article,index)=>(
                                 <AriticleItem key={article.id} index={index} article={article} limited={limited}/>
-                            )):articlesData.map((article,index)=>(
+                            )):articlesData?.map((article,index)=>(
                                 <AriticleItem key={article.id} index={index}  article={article} limited={limited}/>
                             ))):<tr>
                                     <td>

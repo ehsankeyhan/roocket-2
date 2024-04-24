@@ -11,6 +11,7 @@ import Header from './components/layouts/header/Header';
 import { Provider } from 'react-redux'
 import { store } from './components/store/store';
 import Articles from './routes/Articles';
+import Login from './routes/Login';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "articles",
         element: <Articles />,
+      },
+      {
+        path: "login",
+        element: <Login />,
       },
     ],
   },

@@ -11,6 +11,8 @@ export default function SmapleFields({type,name,values,errors,touched,handleBlur
             name={name}                          
             onBlur={(e) => (setIsFocused(false),handleBlur(e))}
             onFocus={() => setIsFocused(true)}
+            value={values?.name}
+            autoComplete = {name}
             className={`border rounded-md px-3  pt-6 pb-2 mb-2 bg-transparent w-full ${
                 errors && touched ? ' border-red-500 focus:outline-red-500' : 'border-gray-300 '
             }`}

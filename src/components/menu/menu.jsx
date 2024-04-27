@@ -4,9 +4,11 @@ import ProfileAvatar from '../profile/ProfileAvatar'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleMenu } from '../store/slice/menuSlice'
 import MenuItem from './MenuItem'
+import useAuth from '../../hooks/useAuth'
 
 
 export default function Menu() {
+    const {handleLogout} = useAuth()
     const menuIsOpen = useSelector((state) => state.menuIsOpen.value)
     const dispatch = useDispatch()
     const handleToggleMenu = () => {
@@ -47,7 +49,7 @@ export default function Menu() {
                 <MenuItem name='Dashboard' />
                 <MenuItem name='Articles' />
             </div>
-            <button className='h-12 w-14 px-2 py-1 hover:bg-opacity-20 rounded-lg hover:bg-neutral-600'>
+            <button onClick={handleLogout} className='h-12 w-14 px-2 py-1 hover:bg-opacity-20 rounded-lg hover:bg-neutral-600'>
                 <ProfileAvatar />
             </button>
         </div>

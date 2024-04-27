@@ -1,46 +1,18 @@
-import { ErrorMessage, Field, Form, Formik } from 'formik'
-import React, { useEffect, useState } from 'react'
-import LoadingButton from '../buttons/LoadingButton'
+import { Form, Formik } from 'formik'
+import React from 'react'
+
 import useFormikLogin from '../../hooks/useFormikLogin';
 import SmapleFields from '../forms/inputs/SmapleFields';
-import useSWRMutation from 'swr/mutation'
-import useSweetAlert from '../../hooks/useSweetAlert';
-import axios from 'axios';
+import useAuth from '../../hooks/useAuth';
 
-
-const login = (url , { arg }) => axios.post(url,{
-    email: arg.email,
-    password :  arg.password,
-  }).then(res => res.data)
 
 export default function LoginCard() {
-    const [isFocused, setIsFocused] = useState(false);
-    const {trigger,isMutating,data,error} = useSWRMutation('https://react-camp-api.roocket.ir/api/admin/login',login,{revalidateIfStale:false,revalidateOnMount:false})
-    const Toast = useSweetAlert()
+    const {isMutating,handleLogin} = useAuth()
+
     const formikProps = useFormikLogin();
 
-    useEffect(()=>{
-        if(data){
-          Toast.fire({
-            icon: "success",
-            title: "You are Login successfully"
-          });
-          console.log(data);
-        }
-    },[data])
-    
-    useEffect(()=>{
-        if(error){
-           Toast.fire({
-              icon: "error",
-              title: error.response.data.message
-            });
-        }
-    },[error])
 
-    const handleLogin = async(values)=>{
-        trigger(values)
-    }
+
 
   return (
     <div>
@@ -73,25 +45,6 @@ export default function LoginCard() {
                         </svg>
                         }
                     </button>
-
-                    <div className="flex justify-center">
-
-                        {/* <button 
-                        className="mr-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                        type='submit'
-                        disabled={isMutating}
-                        >
-                        <LoadingButton isMutating={isMutating} text='Save' /> 
-                        </button>
-                        <button 
-                        className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={handleCancelEdit}
-                        type='button'
-                        disabled={isMutating}
-                        >
-                        Cancel
-                        </button> */}
-                    </div>
                     </Form>
                 )}
                 </Formik>

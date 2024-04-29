@@ -1,5 +1,5 @@
 import React from 'react'
-import Menu from '../../components/menu/Menu'
+import MainMenu from '../../components/menu/Menu'
 import ProtectedRoute from '../ProtectedRoute'
 import useAuth from '../../hooks/useAuth'
 
@@ -13,7 +13,7 @@ export default function Header() {
 
   return (
     <div className='w-full h-14 fixed z-50 backdrop-blur-lg bg-neutral-600 bg-opacity-20  '>
-        <Menu />
+        <MainMenu />
     </div>
   )
 }

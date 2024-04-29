@@ -11,6 +11,7 @@ import AddNewTitleModal from '../modal/AddNewTitleModal';
 import ArticleLoading from './ArticleLoading';
 import useSweetAlert from '../../hooks/useSweetAlert';
 import useSWR from 'swr';
+import HeaderCard from '../dashboard/HeaderCard';
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
@@ -44,20 +45,8 @@ export default function ArticlesCard({limited}) {
   return (
     <>
         <div className=' bg-[#dceefd] p-3 '>
-            {limited?<NavLink to={'/Articles'} className='p-3  flex justify-between hover:bg-neutral-500 cursor-pointer hover:bg-opacity-15 rounded-xl'>
-                <div className='flex items-center gap-x-3'>
-                    <div className='w-10'>
-                        <img src="/articles.png" alt="article" />
-                    </div>
-                    <div>
-                        <p className='font-semibold text-xl tracking-wide'>Articles</p>
-                        <div className='flex items-center -mt-1 text-sm text-neutral-600 font-extralight gap-x-1'>
-                            <Recent />
-                            <p>Recents</p>
-                        </div>
-                    </div>
-                </div>
-            </NavLink>
+            {limited?
+            <HeaderCard title={'Articles'} />
             :<div className={`'p-3  flex justify-between rounded-xl'`}>
                 <div className='flex items-center gap-x-3'>
                     <div className='w-10'>

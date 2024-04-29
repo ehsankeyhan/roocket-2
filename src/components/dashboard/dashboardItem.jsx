@@ -14,10 +14,10 @@ export default function DashboardItem() {
             <QuickAccess />
         </div>
         <div className='basis-2/3'>
-          <div className=' basis-2/3 mb-10 h-80  rounded-2xl bg-white overflow-hidden shadow-2xl hover:scale-[1.03] transition-all duration-300 ease-in-out' >
+          <div className='  mb-10 h-80  rounded-2xl bg-white overflow-hidden shadow-2xl hover:scale-[1.03] transition-all duration-300 ease-in-out' >
               <ArticlesCard limited={true}/>
           </div>
-          <div className='  mb-10  rounded-2xl bg-white overflow-hidden shadow-2xl hover:scale-[1.03] transition-all duration-300 ease-in-out' >
+          <div className='  mb-10 min-h-80 rounded-2xl bg-white overflow-hidden shadow-2xl hover:scale-[1.03] transition-all duration-300 ease-in-out' >
               <ChartsCard />
           </div>
         </div>

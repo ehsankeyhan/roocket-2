@@ -17,12 +17,11 @@ function BarChart({ chartData }) {
             },
           },
           scales: {
-            y: {
+            x: {
                 grid: {
                     drawOnChartArea: false
                 }
             },
-           
         }
         }}
       />

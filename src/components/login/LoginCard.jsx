@@ -16,12 +16,12 @@ export default function LoginCard() {
 
   return (
     <div>
-        <div className='w-3/5 pb-5 rounded-[2rem] drop-shadow-2xl shadow-2xl bg-white mx-auto'>
+        <div className='md:w-3/5 pb-5 rounded-[2rem] drop-shadow-2xl shadow-2xl bg-white mx-auto'>
             <div className='relative mx-auto flex justify-center items-center h-40 w-40 pt-20'>
                 <img src="/iAdminLogin.svg" alt="" className='animate-spin-slow absolute w-40 h-40'/>
                 <p className='font-semibold text-xl '>iAdmin</p>
             </div>
-            <div className=' mt-20 mx-20 transition-all duration-300 ease-in-out'>
+            <div className=' mt-20 md:mx-20 mx-10 transition-all duration-300 ease-in-out'>
                 <p className='font-medium text-center mb-5  text-4xl'>Sign In With Email</p>
                 <Formik
                     {...formikProps}
